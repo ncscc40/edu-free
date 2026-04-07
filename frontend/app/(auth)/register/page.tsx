@@ -18,7 +18,16 @@ const schema = z.object({
   name: z.string().min(2),
   uid: z.string().min(3),
   password: z.string().min(8),
-  department: z.coerce.number().min(1),
+  department: z.preprocess(
+    (value) => (value === "" ? undefined : Number(value)),
+    z
+      .number({
+        required_error: "Please select a department",
+        invalid_type_error: "Please select a department",
+      })
+      .int()
+      .min(1, { message: "Please select a department" })
+  ),
 });
 
 type FormValues = z.infer<typeof schema>;
