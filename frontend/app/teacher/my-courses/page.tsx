@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { Suspense, useEffect, useState, useRef, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import { ChevronDown, ChevronUp, PlusCircle } from "lucide-react";
 import { toast } from "sonner";
@@ -31,7 +31,7 @@ interface EditableResource {
   notes?: string | null;
 }
 
-export default function TeacherMyCoursesPage() {
+function TeacherMyCoursesContent() {
   const searchParams = useSearchParams();
   const [courses, setCourses] = useState<Course[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
@@ -461,5 +461,21 @@ export default function TeacherMyCoursesPage() {
         </DialogContent>
       </Dialog>
     </div>
+  );
+}
+
+export default function TeacherMyCoursesPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="space-y-4">
+          <Skeleton className="h-24 w-full" />
+          <Skeleton className="h-24 w-full" />
+          <Skeleton className="h-24 w-full" />
+        </div>
+      }
+    >
+      <TeacherMyCoursesContent />
+    </Suspense>
   );
 }
