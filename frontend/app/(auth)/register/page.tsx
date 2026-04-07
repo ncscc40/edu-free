@@ -32,6 +32,13 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
+const FALLBACK_DEPARTMENTS: Department[] = [
+  { id: 1, name: "Computer Science" },
+  { id: 2, name: "Mechanical" },
+  { id: 3, name: "Electronics" },
+  { id: 4, name: "Civil" },
+];
+
 export default function RegisterPage() {
   const router = useRouter();
   const [departments, setDepartments] = useState<Department[]>([]);
@@ -46,9 +53,11 @@ export default function RegisterPage() {
     const fetchDepartments = async () => {
       try {
         const response = await api.get<ApiResponse<{ departments: Department[] }>>("/admin/departments");
-        setDepartments(response.data.data.departments ?? []);
+        const list = response?.data?.data?.departments ?? [];
+        setDepartments(list.length ? list : FALLBACK_DEPARTMENTS);
       } catch {
-        setDepartments([]);
+        // If API is down, still show a usable list so the dropdown isn't empty.
+        setDepartments(FALLBACK_DEPARTMENTS);
       }
     };
     fetchDepartments();
