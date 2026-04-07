@@ -1,0 +1,24 @@
+# Node/Next frontend
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.turbo/
+frontend/.vercel/
+frontend/.env.local
+frontend/.env
+
+# Python backend
+backend/__pycache__/
+backend/**/*.pyc
+backend/.env
+backend/.env.local
+backend/instance/
+backend/uploads/
+backend/*.db
+
+# Common
+.DS_Store
+*.log
+*.sqlite
+*.db
+
